@@ -1,12 +1,44 @@
 #!/bin/env node
 
+var express = require('express');
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+var hosting = false;
+var waiting = 2;
+
 app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+  hosting = false;
+  if (!hosting) {
+    console.log("hosting room");
+    res.sendFile(__dirname + '/public/index.html');
+    hosting = true;
+  } else {
+    console.log("controller");
+    res.sendFile(__dirname + '/public/controller_page.html');
+  }
 });
+
+app.get('/controller.html', function(req, res) {
+  if (waiting === 2) {
+    res.sendFile(__dirname + '/public/controller_page2.html');
+    waiting -= 1;
+  } else if (waiting === 1) {
+    res.sendFile(__dirname + '/public/controller_page.html');
+    io.emit('game start', {});
+    waiting -= 1;
+  }
+  console.log(waiting);
+});
+
+app.use(express.static('public'));
+/*
+app.use("/js", function() {
+  console.log(__dirname);
+  express.static(__dirname + '/js')
+});
+*/
 
 io.on('connection', function(socket){
 
@@ -14,8 +46,14 @@ io.on('connection', function(socket){
     io.emit('join request', data);
   });
 
-  socket.on('player hit', function(data){
-    io.emit('player hit', data);
+  socket.on('player1 hit', function(data){
+    console.log("player1 hit");
+    io.emit('player1 hit', data);
+  });
+
+  socket.on('player2 hit', function(data){
+    console.log("player2 hit");
+    io.emit('player2 hit', data);
   });
 
   socket.on('reset btn', function(){
@@ -23,6 +61,13 @@ io.on('connection', function(socket){
   });
 });
 
-http.listen(process.env.OPENSHIFT_NODEJS_PORT, process.env.OPENSHIFT_NODEJS_IP, function(){
-  console.log("start");
+
+http.listen(3000, function(){
+  console.log('listening on *:3000');
 });
+
+// http.listen(process.env.PORT, process.env.IP, function(){
+//   console.log("start");
+//   console.log("https://demo-project-krmfla.c9.io");
+// });
+

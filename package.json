@@ -18,19 +18,18 @@
     "type": "git",
     "url": "https://github.com/openshift/origin-server"
   },
-
   "engines": {
     "node": ">= 0.6.0",
     "npm": ">= 1.0.0"
   },
-
   "dependencies": {
-    "express": "4.10.2",
-    "socket.io": "1.2.0"
+    "express": "^4.16.4",
+    "nodemon": "^1.18.9",
+    "socket.io": "1.2.0",
+    "yarn": "^1.13.0"
   },
   "devDependencies": {},
   "bundleDependencies": [],
-
   "private": true,
   "main": "server.js"
 }
