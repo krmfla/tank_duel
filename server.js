@@ -8,19 +8,22 @@ var io = require('socket.io')(http);
 var hosting = false;
 var waiting = 2;
 
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
   hosting = false;
   if (!hosting) {
     console.log("hosting room");
     res.sendFile(__dirname + '/public/index.html');
     hosting = true;
+    setTimeout(function () {
+      io.emit('game start', {});
+    }, 1000);
   } else {
     console.log("controller");
     res.sendFile(__dirname + '/public/controller_page.html');
   }
 });
 
-app.get('/controller.html', function(req, res) {
+app.get('/controller.html', function (req, res) {
   if (waiting === 2) {
     res.sendFile(__dirname + '/public/controller_page2.html');
     waiting -= 1;
@@ -29,7 +32,6 @@ app.get('/controller.html', function(req, res) {
     io.emit('game start', {});
     waiting -= 1;
   }
-  console.log(waiting);
 });
 
 app.use(express.static('public'));
@@ -40,29 +42,29 @@ app.use("/js", function() {
 });
 */
 
-io.on('connection', function(socket){
+io.on('connection', function (socket) {
 
-  socket.on('join request', function(data){
+  socket.on('join request', function (data) {
     io.emit('join request', data);
   });
 
-  socket.on('player1 hit', function(data){
+  socket.on('player1 hit', function (data) {
     console.log("player1 hit");
     io.emit('player1 hit', data);
   });
 
-  socket.on('player2 hit', function(data){
+  socket.on('player2 hit', function (data) {
     console.log("player2 hit");
     io.emit('player2 hit', data);
   });
 
-  socket.on('reset btn', function(){
+  socket.on('reset btn', function () {
     io.emit('reset btn');
   });
 });
 
 
-http.listen(3000, function(){
+http.listen(3000, function () {
   console.log('listening on *:3000');
 });
 

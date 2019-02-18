@@ -1,44 +1,45 @@
 <!doctype html>
 <html>
-  <head>
-    <title>PROJECT</title>
-    <meta content="width=device-width, initial-scale=1.0 user-scalable=no" name="viewport"/>
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    <!-- liberary -->
-    <script
-      src="https://code.jquery.com/jquery-1.12.4.min.js"
-      integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
-      crossorigin="anonymous">
+
+<head>
+  <title>PROJECT</title>
+  <meta content="width=device-width, initial-scale=1.0 user-scalable=no" name="viewport" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <!-- liberary -->
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js"
+    integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous">
     </script>
-    <script src="js/socket.io-1.2.0.js"></script>
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
-    <!-- main -->
-    <script src="js/common.js"></script>
-    <script src="js/Tank_Module.js"></script>
-    <script src="js/main.js"></script>
-  </head>
-  <body>
-    <!-- QR CODE -->
-    <div id="qrcode_box" class="qrcode_box">
-        <p>等候加入...</p>
-        <div id="qrcode" class="qrcode"></div>
-    </div>
-    
-    <!-- HOST -->
-    <div id="main" class="main hide">
+  <script src="js/socket.io-1.2.0.js"></script>
+  <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+  <!-- main -->
+  <script src="js/common.js"></script>
+  <script src="js/Tank_Module.js"></script>
+  <script src="js/main.js"></script>
+</head>
+
+<body style="opacity:.05">
+  <!-- QR CODE -->
+  <div id="qrcode_box" class="qrcode_box">
+    <p>等候加入...</p>
+    <div id="qrcode" class="qrcode"></div>
+  </div>
+
+  <!-- HOST -->
+  <div id="main" class="main hidden">
     <div class="upDisplay"></div>
-    <div id="tank1" class="tankBox umbrella">
-      <img class="imgFillFull" src="images/square.png"/>
+    <div id="tank1" class="tankBox">
+      <img class="tankBody" />
       <div class="cannon"></div>
     </div>
 
-    <div id="tank2" class="tankBox umbrella">
-        <img class="imgFillFull" src="images/square.png"/>
-        <div class="cannon"></div>
-      </div>
+    <div id="tank2" class="tankBox">
+      <img class="tankBody" />
+      <div class="cannon"></div>
     </div>
-  </body>
+  </div>
+</body>
+
 </html>
 
 <!--
