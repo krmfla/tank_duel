@@ -12,6 +12,8 @@ function TankPrototype(DOMelement, character, configData) {
 	this.offsetY = null; // originY + offsetY = center of Y
 	this.lockOnTarget = null;
 	this.tankBottom = null;
+	this.bullet_array = [];
+	this.characterData = null;
 
 	//=== event binding ===
 	this.main.addEventListener("click", this.setPoint.bind(this));
@@ -23,7 +25,7 @@ function TankPrototype(DOMelement, character, configData) {
 
 //=== Action ===
 TankPrototype.prototype.init = function (configData, character) {
-	this.characterData = configData;
+	this.characterData = configData; // combine when create constructor
 	//this.setData(configData);
 	this.initPosition(character);
 };
@@ -152,7 +154,6 @@ TankPrototype.prototype.move = function () {
 }
 
 TankPrototype.prototype.lockOn = function (target) {
-	//TODO:
 	this.lockOnTarget = target;
 	var cannon = this.tankBodyEl.querySelector('.cannon');
 	this.lockonTimer = setInterval(function () {
@@ -161,8 +162,33 @@ TankPrototype.prototype.lockOn = function (target) {
 		var cannonAngle = (Math.atan2(distanceY, distanceX) * 180 / Math.PI) + 270;
 		cannon.style.transform = "rotate(" + cannonAngle + "deg)";
 	}.bind(this), 300);
-
 };
+
+TankPrototype.prototype.setFireSystem = function () {
+	console.warn("--- Fire System ---");
+	this.firing();
+	// keep shoting
+	setInterval(function () {
+		this.firing();
+	}.bind(this), 5000);
+}
+
+TankPrototype.prototype.removeBullet = function (object) {
+	for (var i = 0, max = this.bullet_array.length; i < max; i++) {
+		if (this.bullet_array[i] === object) {
+			console.warn("FOUND!");
+			this.bullet_array.splice(i, 1);
+			return;
+		}
+	}
+}
+
+TankPrototype.prototype.firing = function () {
+	console.warn("--- firing ---");
+	if (this.lockOnTarget) {
+		this.bullet_array.push(new Bullet_Module(this));
+	}
+}
 
 TankPrototype.prototype.eventHandler = function (event) {
 };

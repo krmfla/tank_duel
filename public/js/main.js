@@ -7,7 +7,8 @@ window.onload = function () {
 	var tank2 = document.getElementById("tank2");
 	var config = {
 		"speed": 2,
-		"rotate": 2
+		"rotate": 2,
+		"bullet_step_range": 10
 	};
 	window.tankPrototype1 = new TankPrototype(tank1, 1, config);
 	window.tankPrototype2 = new TankPrototype(tank2, 2, config);
@@ -18,7 +19,7 @@ function createRoom() {
 	var qrcode_el = document.getElementById("qrcode");
 	console.warn(qrcode_el);
 	var room_id = Math.floor(Math.random() * 10000);
-	var url = "https://9676d270.ngrok.io";
+	var url = "https://a58b59c4.ngrok.io";
 	var path = "/controller.html";
 	console.log(location);
 	console.log(room_id);
@@ -26,10 +27,14 @@ function createRoom() {
 }
 
 function gameStart() {
+	console.warn("gameStart");
 	$("#qrcode_box").hide();
 	$("#main").removeClass('hidden');
 	window.tankPrototype1.lockOn(window.tankPrototype2);
 	window.tankPrototype2.lockOn(window.tankPrototype1);
+
+	window.tankPrototype1.setFireSystem();
+	window.tankPrototype2.setFireSystem();
 }
 
 var socket = io();
