@@ -19,7 +19,7 @@ function createRoom() {
 	var qrcode_el = document.getElementById("qrcode");
 	console.warn(qrcode_el);
 	var room_id = Math.floor(Math.random() * 10000);
-	var url = "https://a58b59c4.ngrok.io";
+	var url = "https://node-tank-duel.herokuapp.com";
 	var path = "/controller.html";
 	console.log(location);
 	console.log(room_id);

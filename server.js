@@ -15,9 +15,9 @@ app.get('/', function (req, res) {
     console.log("hosting room");
     res.sendFile(__dirname + '/public/index.html');
     hosting = true;
-    setTimeout(function () {
-      io.emit('game start', {});
-    }, 1000);
+    // setTimeout(function () {
+    //   io.emit('game start', {});
+    // }, 1000);
   } else {
     console.log("controller");
     res.sendFile(__dirname + '/public/controller_page.html');
