@@ -76,11 +76,16 @@ p {
 .bullet_wrapper {
     width: 30px;
     height: 30px;
-    border: 1px solid red;
+
+    /* border: 1px solid red; */
     position: absolute;
     top: 0;
     left: 0;
     z-index: 10;
+    background-image: url("../images/bullet.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center center;
 }
 
 @media (max-width: 768px) {}

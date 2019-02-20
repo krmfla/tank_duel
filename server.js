@@ -6,8 +6,6 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var PORT = process.env.PORT || 5000;
 
-console.log(process.env);
-
 var hosting = false;
 var waiting = 2;
 
@@ -17,9 +15,9 @@ app.get('/', function (req, res) {
     console.log("hosting room");
     res.sendFile(__dirname + '/public/index.html');
     hosting = true;
-    // setTimeout(function () {
-    //   io.emit('game start', {});
-    // }, 1000);
+    setTimeout(function () {
+      io.emit('game start', {});
+    }, 1000);
   } else {
     console.log("controller");
     res.sendFile(__dirname + '/public/controller_page.html');
