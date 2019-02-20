@@ -6,6 +6,8 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var PORT = process.env.PORT || 5000;
 
+console.log(process.env);
+
 var hosting = false;
 var waiting = 2;
 
@@ -33,6 +35,12 @@ app.get('/controller.html', function (req, res) {
     io.emit('game start', {});
     waiting -= 1;
   }
+});
+
+app.get('/reset', function (req, res) {
+  hosting = false;
+  waiting = 2;
+  res.send("reset");
 });
 
 app.use(express.static('public'));
