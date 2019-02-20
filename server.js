@@ -4,6 +4,7 @@ var express = require('express');
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var PORT = process.env.PORT || 5000;
 
 var hosting = false;
 var waiting = 2;
@@ -64,12 +65,6 @@ io.on('connection', function (socket) {
 });
 
 
-http.listen(5000, function () {
-  console.log('listening on *:5000');
+http.listen(PORT, function () {
+  console.log(`listening on *: ${PORT}`);
 });
-
-// http.listen(process.env.PORT, process.env.IP, function(){
-//   console.log("start");
-//   console.log("https://demo-project-krmfla.c9.io");
-// });
-

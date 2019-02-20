@@ -29,5 +29,5 @@
   "devDependencies": {},
   "bundleDependencies": [],
   "private": true,
-  "main": "nodemon server.js"
+  "main": "node server.js"
 }
