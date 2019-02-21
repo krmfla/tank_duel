@@ -14,6 +14,8 @@ function TankPrototype(DOMelement, character, configData) {
 	this.tankBottom = null;
 	this.bullet_array = [];
 	this.characterData = null;
+	this.fieldWidth = 1280;
+	this.fieldHeight = 720;
 
 	//=== event binding ===
 	this.main.addEventListener("click", this.setPoint.bind(this));
@@ -32,6 +34,18 @@ TankPrototype.prototype.init = function (configData, character) {
 
 TankPrototype.prototype.setPoint = function (event) {
 	//console.log(event);
+	// checking field
+	if (event.clientX < 20) {
+		event.clientX = 20;
+	} else if (event.clientX > this.fieldWidth - 20) {
+		event.clientX = this.fieldWidth - 20;
+	}
+
+	if (event.clientY < 20) {
+		event.clientY = 20;
+	} else if (event.clientY > this.fieldHeight - 20) {
+		event.clientY = this.fieldHeight - 20;
+	}
 
 	var distanceX = event.clientX - this.x;
 	var distanceY = event.clientY - this.y;
@@ -141,8 +155,22 @@ TankPrototype.prototype.move = function () {
 		//console.log("Y < distance");
 	}
 
-	this.tankBodyEl.style.left = (this.x - this.offsetX) + "px";
-	this.tankBodyEl.style.top = (this.y - this.offsetY) + "px";
+	// out of field
+
+	if (this.x < 20) {
+		this.x = 20;
+	} else if (this.x > this.fieldWidth - 20) {
+		this.x = this.fieldWidth - 20;
+	}
+
+	if (this.y < 20) {
+		this.y = 20;
+	} else if (this.y > this.fieldHeight - 20) {
+		this.y = this.fieldHeight - 20;
+	}
+
+	this.tankBodyEl.style.left = (this.x - (this.tankBodyEl.clientWidth / 2)) + "px";
+	this.tankBodyEl.style.top = (this.y - (this.tankBodyEl.clientHeight / 2)) + "px";
 
 	if (this.x !== this.targetPoint.x || this.y !== this.targetPoint.y) {
 		this.moveTimer = setTimeout(function () {

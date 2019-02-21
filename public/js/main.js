@@ -2,6 +2,27 @@
 	alert('Error: ' + errorMsg + ' Script: ' + url + ' Line: ' + lineNumber);
 };*/
 
+var room_id = null;
+
+console.log(location);
+
+if (window.location.pathname === "/") {
+	room_id = Math.floor(Math.random() * 10000);
+	window.location.href = window.location.href + room_id;
+} else {
+	var content = window.location.pathname;
+	var reg = /^\/(\d*)$/g;
+	var match = reg.exec(content);
+	console.warn(match[1]);
+	if (match[1]) {
+		room_id = match[1];
+	} else {
+		alert("房間不存在");
+	}
+}
+
+console.log("room_id: " + room_id);
+
 window.onload = function () {
 	var tank1 = document.getElementById("tank1");
 	var tank2 = document.getElementById("tank2");
@@ -18,12 +39,12 @@ window.onload = function () {
 function createRoom() {
 	var qrcode_el = document.getElementById("qrcode");
 	console.warn(qrcode_el);
-	var room_id = Math.floor(Math.random() * 10000);
-	var url = window.location.href;
-	var path = "/controller.html";
-	console.log(location);
-	console.log(room_id);
-	var qrcode = new QRCode(qrcode_el, url + path + "?room=" + room_id);
+	var url = window.location.origin;
+	console.log("url: " + url);
+	var path = "/controller/" + room_id;
+	// console.log(location);
+	console.log(url + path);
+	var qrcode = new QRCode(qrcode_el, url + path);
 }
 
 function gameStart() {
@@ -37,7 +58,7 @@ function gameStart() {
 	window.tankPrototype2.setFireSystem();
 }
 
-var socket = io();
+var socket = io(`/${room_id}`);
 //console.log(socket);
 
 //Event handler
@@ -57,6 +78,5 @@ socket.on("player2 hit", function (data) {
 
 socket.on("game start", function (data) {
 	console.log(data);
-	// alert("game start");
 	gameStart();
 });

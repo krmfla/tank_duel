@@ -1,69 +1,24 @@
 <!doctype html>
 <html>
-  <head>
-    <title>PROJECT</title>
-    <meta content="width=device-width, initial-scale=1.0 user-scalable=no" name="viewport"/>
-    <!-- CSS -->
-    <!--<link rel="stylesheet" href="css/style.css">-->
-    <style>
-      body {
-        font-size:0;
-        padding:0;
-        margin:0;
-      }
-      
-      .controlMap {
-        border:1px solid black;
-        max-width:80%;
-        background:orange;
-      }
-      
-      .controlMap img {
-        opacity:0;
-      }
-    </style>
-    <!-- Javascript -->
-    <script src="js/socket.io-1.2.0.js"></script>
-    <!--<script src="js/jquery-1.11.1.js"></script>-->
-    <script src="js/common.js"></script>
-    <script src="js/controller.js"></script>
-    <script>
-      var mapEl;
-      var mapRatio;
-      var touchX;
-      var touchY;
-      var socket = io();
-    
-      document.addEventListener("DOMContentLoaded", init);
 
-      function init() {
-         mapEl = document.getElementById("controlMap");
-        console.log(mapEl);
-        mapEl.addEventListener("touchstart",handleTouch);
-      }
-      
-      function handleTouch(event) {
-        console.log(event);
-        console.log(event.targetTouches[0]);
-        console.log(event.targetTouches[0].clientX, event.targetTouches[0].clientY);
-        console.log(event.targetTouches[0].target.clientWidth, event.targetTouches[0].target.clientHeight);
-        if (!mapRatio) {
-          mapRatio = 1280 / event.targetTouches[0].target.clientWidth;
-        }
-        
-        touchX = event.targetTouches[0].clientX * mapRatio;
-        touchY = event.targetTouches[0].clientY * mapRatio;
+<head>
+  <title>1P CONTROLLER</title>
+  <meta content="width=device-width, initial-scale=1.0 user-scalable=no" name="viewport" />
+  <!-- CSS -->
+  <link rel="stylesheet" href="/css/controller.css">
+  <!-- Javascript -->
+  <script src="/js/socket.io-1.2.0.js"></script>
+  <!--<script src="js/jquery-1.11.1.js"></script>-->
+  <script>
+    var character = "player1";
+  </script>
+  <script src="/js/common.js"></script>
+  <script src="/js/controller.js"></script>
+</head>
 
-        socket.emit("player1 hit", {"touchX": touchX, "touchY": touchY});
-      }
-    </script>
-  </head>
-  <body>
-    <p style="font-size:16px;">1P</p>
-    <div id="controlMap" class="controlMap">
-        <img src="images/128x72.png" width="100%" />
-    </div>
+<body>
+  <p style="font-size:16px;">1P</p>
+  <div id="controlMap" class="controlMap"></div>
+</body>
 
-    </div>
-  </body>
 </html>

@@ -1,74 +1,98 @@
 #!/bin/env node
 
 var express = require('express');
-var app = require('express')();
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var PORT = process.env.PORT || 5000;
 
-var hosting = false;
-var waiting = 2;
+// var hosting = false;
+// var waiting = 2;
+
+var room_object = {};
+var waiting_object = {};
 
 app.get('/', function (req, res) {
-  hosting = false;
-  if (!hosting) {
-    console.log("hosting room");
-    res.sendFile(__dirname + '/public/index.html');
-    hosting = true;
-    setTimeout(function () {
-      io.emit('game start', {});
-    }, 1000);
-  } else {
-    console.log("controller");
-    res.sendFile(__dirname + '/public/controller_page.html');
-  }
+  res.sendFile(__dirname + '/public/index.html');
+  // hosting = false;
+  // if (!hosting) {
+  //   console.log("hosting room");
+  //   console.log(__dirname);
+  //   res.sendFile(__dirname + '/public/index.html');
+  //   hosting = true;
+  // setTimeout(function () {
+  //   io.emit('game start', {});
+  // }, 1000);
+  // } else {
+  //   console.log("controller");
+  //   res.sendFile(__dirname + '/public/controller_page.html');
+  // }
 });
 
-app.get('/controller.html', function (req, res) {
-  if (waiting === 2) {
+app.get('/:id', function (req, res) {
+  if (!room_object[req.params.id]) {
+    room_object[req.params.id] = io.of(`/${req.params.id}`);
+    waiting_object[req.params.id] = {};
+    waiting_object[req.params.id].waiting = 2;
+
+    room_object[req.params.id].on('connection', function (socket) {
+      var _id = req.params.id;
+      console.log("connection");
+      socket.on('player1 hit', function (data) {
+        console.log(_id + ": player1 hit");
+        room_object[req.params.id].emit('player1 hit', data);
+      });
+
+      socket.on('player2 hit', function (data) {
+        console.log(_id + ": player2 hit");
+        room_object[req.params.id].emit('player2 hit', data);
+      });
+    });
+  }
+  res.sendFile(__dirname + '/public/index.html');
+});
+
+app.get('/controller/:id', function (req, res) {
+  if (waiting_object[req.params.id].waiting === 2) {
+    res.sendFile(__dirname + '/public/controller_page.html');
+    waiting_object[req.params.id].waiting -= 1;
+  } else if (waiting_object[req.params.id].waiting === 1) {
     res.sendFile(__dirname + '/public/controller_page2.html');
-    waiting -= 1;
-  } else if (waiting === 1) {
-    res.sendFile(__dirname + '/public/controller_page.html');
-    io.emit('game start', {});
-    waiting -= 1;
+    room_object[req.params.id].emit('game start', {});
+    waiting_object[req.params.id].waiting -= 1;
+  } else {
+    res.send("連線已滿");
   }
 });
 
-app.get('/reset', function (req, res) {
-  hosting = false;
-  waiting = 2;
+app.get('/:id/reset', function (req, res) {
+  room_object[req.params.id] = null;
+  waiting_object[req.params.id].waiting = 2;
   res.send("reset");
 });
 
 app.use(express.static('public'));
-/*
-app.use("/js", function() {
-  console.log(__dirname);
-  express.static(__dirname + '/js')
-});
-*/
 
-io.on('connection', function (socket) {
+// io.on('connection', function (socket) {
 
-  socket.on('join request', function (data) {
-    io.emit('join request', data);
-  });
+// socket.on('join request', function (data) {
+//   io.emit('join request', data);
+// });
 
-  socket.on('player1 hit', function (data) {
-    console.log("player1 hit");
-    io.emit('player1 hit', data);
-  });
+// socket.on('player1 hit', function (data) {
+//   console.log("player1 hit");
+//   io.emit('player1 hit', data);
+// });
 
-  socket.on('player2 hit', function (data) {
-    console.log("player2 hit");
-    io.emit('player2 hit', data);
-  });
+// socket.on('player2 hit', function (data) {
+//   console.log("player2 hit");
+//   io.emit('player2 hit', data);
+// });
 
-  socket.on('reset btn', function () {
-    io.emit('reset btn');
-  });
-});
+// socket.on('reset btn', function () {
+//   io.emit('reset btn');
+// });
+// });
 
 
 http.listen(PORT, function () {
