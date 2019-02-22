@@ -36,6 +36,13 @@ window.onload = function () {
 	createRoom();
 }
 
+document.addEventListener("visibilitychange", function () {
+	console.log(document.visibilityState);
+	if (document.visibilityState === "hidden") {
+		alert("對戰中斷！");
+	}
+});
+
 function createRoom() {
 	var qrcode_el = document.getElementById("qrcode");
 	console.warn(qrcode_el);
@@ -56,6 +63,13 @@ function gameStart() {
 
 	window.tankPrototype1.setFireSystem();
 	window.tankPrototype2.setFireSystem();
+}
+
+function gameEnd() {
+	window.tankPrototype1.holdFiring();
+	window.tankPrototype2.holdFiring();
+	clearInterval(window.tankPrototype1.lockonTimer);
+	clearInterval(window.tankPrototype2.lockonTimer);
 }
 
 var socket = io(`/${room_id}`);

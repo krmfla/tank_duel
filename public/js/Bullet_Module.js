@@ -36,6 +36,7 @@ Bullet_Module.prototype.init = function () {
 }
 
 Bullet_Module.prototype.process = function () {
+    console.warn("process");
     this.baseX -= this.ratioX;
     this.baseY -= this.ratioY;
 
@@ -75,12 +76,18 @@ Bullet_Module.prototype.hitTest = function () {
 }
 
 Bullet_Module.prototype.decreaseHP = function () {
-    var element = this.tankBase.lockOnTarget.tankBodyEl;
-    this.tankBase.lockOnTarget.hitPoint -= 10;
-    element.classList.add('shake');
-    setTimeout(function () {
-        element.classList.remove('shake');
-    }, 1000);
+    var enemy = this.tankBase.lockOnTarget;
+    enemy.hitPoint -= 15;
+    if (enemy.hitPoint < 0) {
+        enemy.hitPoint = 0;
+        enemy.destory();
+    } else {
+        enemy.tankBodyEl.classList.add('shake');
+        setTimeout(function () {
+            enemy.tankBodyEl.classList.remove('shake');
+        }, 1000);
+    }
+    enemy.hitPointEl.style.width = enemy.hitPoint + "%";
 }
 
 Bullet_Module.prototype.outField = function () {

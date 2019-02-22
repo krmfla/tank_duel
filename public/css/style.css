@@ -8,9 +8,6 @@ body {
     font-size: 0;
     padding: 0;
     background: white;
-
-    /*background-image:url('../images/bg3.jpg');*/
-    /* background-image:url('../images/background.png'); */
     background-repeat: no-repeat;
     background-size: 1280px 720px;
 }
@@ -43,7 +40,50 @@ p {
     height: 256px;
 }
 
-.upDisplay {}
+.upDisplay {
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+}
+
+.hit_point {
+    width: 500px;
+    height: 50px;
+    top: 20px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    position: absolute;
+    box-sizing: border-box;
+    padding: 16px 15px;
+}
+
+.hit_point.left {
+    background-image: url("../images/hp_bar1.png");
+    left: 50px;
+}
+
+.hit_point.right {
+    background-image: url("../images/hp_bar2.png");
+    right: 50px;
+}
+
+.point_bar {
+    width: 100%;
+    height: 100%;
+    background-color: red;
+    transition: all .6s;
+}
+
+.point_bar.left {
+    float: right;
+}
+
+.point_bar.right {
+    float: left;
+}
 
 .tankBox {
     width: 6%;
@@ -71,6 +111,17 @@ p {
     left: 0;
     background-image: url("../images/tank_b_canon.png");
     background-size: 100% 100%;
+}
+
+.explode {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url("../images/explode.gif");
+    background-size: 100% 100%;
+    z-index: 3;
 }
 
 .bullet_wrapper {

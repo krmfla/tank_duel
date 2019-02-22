@@ -21,7 +21,7 @@ app.get('/', function (req, res) {
   //   res.sendFile(__dirname + '/public/index.html');
   //   hosting = true;
   // setTimeout(function () {
-  //   io.emit('game start', {});
+  //   // io.emit('game start', {});
   // }, 1000);
   // } else {
   //   console.log("controller");
@@ -50,6 +50,10 @@ app.get('/:id', function (req, res) {
     });
   }
   res.sendFile(__dirname + '/public/index.html');
+  // setTimeout(function () {
+  //   console.log("set timeout");
+  //   room_object[req.params.id].emit('game start', {});
+  // }, 3000);
 });
 
 app.get('/controller/:id', function (req, res) {

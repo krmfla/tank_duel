@@ -16,6 +16,10 @@ function TankPrototype(DOMelement, character, configData) {
 	this.characterData = null;
 	this.fieldWidth = 1280;
 	this.fieldHeight = 720;
+	this.hitPoint = 100;
+	this.hitPointEl = document.getElementById("point_bar" + character);
+	this.firingTimer = null;
+	this.hold = false;
 
 	//=== event binding ===
 	this.main.addEventListener("click", this.setPoint.bind(this));
@@ -133,10 +137,11 @@ TankPrototype.prototype.rotate = function () {
 };
 
 TankPrototype.prototype.move = function () {
+	console.warn("move");
 	if (this.targetPoint.forwardX === 0) {
 		this.x = this.targetPoint.x;
 		//console.log("forwardX = 0");
-	} else if (Math.abs(this.targetPoint.x - this.x) < Math.abs(this.targetPoint.forwardX * this.characterData.speed)) {
+	} else if (Math.abs(this.targetPoint.x - this.x) <= Math.abs(this.targetPoint.forwardX * this.characterData.speed)) {
 		this.x = this.targetPoint.x;
 		//console.log("X close");
 	} else {
@@ -147,7 +152,7 @@ TankPrototype.prototype.move = function () {
 	if (this.targetPoint.forwardY === 0) {
 		this.y = this.targetPoint.y;
 		//console.log("forwardY = 0");
-	} else if (Math.abs(this.targetPoint.y - this.y) < Math.abs(this.targetPoint.forwardY * this.characterData.speed)) {
+	} else if (Math.abs(this.targetPoint.y - this.y) <= Math.abs(this.targetPoint.forwardY * this.characterData.speed)) {
 		//console.log("Y close");
 		this.y = this.targetPoint.y;
 	} else {
@@ -182,6 +187,7 @@ TankPrototype.prototype.move = function () {
 }
 
 TankPrototype.prototype.lockOn = function (target) {
+	console.warn("lockOn");
 	this.lockOnTarget = target;
 	var cannon = this.tankBodyEl.querySelector('.cannon');
 	this.lockonTimer = setInterval(function () {
@@ -196,7 +202,7 @@ TankPrototype.prototype.setFireSystem = function () {
 	console.warn("--- Fire System ---");
 	this.firing();
 	// keep shoting
-	setInterval(function () {
+	this.firingTimer = setInterval(function () {
 		this.firing();
 	}.bind(this), 5000);
 }
@@ -230,10 +236,10 @@ TankPrototype.prototype.initPosition = function (character) {
 	this.offsetY = parseFloat(this.tankBodyEl.clientHeight) / 2;
 
 	if (character === 1) {
-		startX = 50;
+		startX = 250;
 		this.currentAngle = 180 + this.offsetAngle;
 	} else if (character === 2) {
-		startX = 750;
+		startX = 950;
 		this.currentAngle = 0 + this.offsetAngle;
 	}
 
@@ -297,3 +303,19 @@ TankPrototype.prototype.setTouchPoint = function (object) {
 	this.rotate();
 	return;
 };
+
+TankPrototype.prototype.holdFiring = function () {
+	console.log("holdFiring");
+	this.hold = true;
+	clearInterval(this.firingTimer);
+}
+
+TankPrototype.prototype.destory = function () {
+	var explodeEl = document.createElement("DIV");
+	explodeEl.classList.add("explode");
+	this.tankBodyEl.appendChild(explodeEl);
+	gameEnd();
+	setTimeout(function () {
+		this.tankBodyEl.innerHTML = "";
+	}.bind(this), 1000);
+}

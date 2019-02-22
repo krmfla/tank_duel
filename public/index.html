@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>PROJECT</title>
+  <title>Tank Duel</title>
   <meta content="width=device-width, initial-scale=1.0 user-scalable=no" name="viewport" />
   <!-- CSS -->
   <link rel="stylesheet" href="css/style.css">
@@ -28,7 +28,14 @@
 
   <!-- HOST -->
   <div id="main" class="main hidden">
-    <div class="upDisplay"></div>
+    <div class="upDisplay">
+      <div id="hit_point1" class="hit_point left">
+        <div id="point_bar1" class="point_bar left"></div>
+      </div>
+      <div id="hit_point2" class="hit_point right">
+        <div id="point_bar2" class="point_bar right"></div>
+      </div>
+    </div>
     <div id="tank1" class="tankBox">
       <img class="tankBody" />
       <div class="cannon"></div>
@@ -44,7 +51,7 @@
 </html>
 
 <!--
-todo:bring id token to host view
+TODO:
 add audio api
 depend user's device, include different js
 -->
