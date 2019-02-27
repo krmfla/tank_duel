@@ -12,7 +12,7 @@ function Bullet_Module(self) {
 }
 
 Bullet_Module.prototype.init = function () {
-    console.warn("=== init ===");
+    // console.warn("=== init ===");
     var tank = this.tankBase;
     var dis_x = tank.x - tank.lockOnTarget.x;
     var dis_y = tank.y - tank.lockOnTarget.y;
@@ -36,7 +36,7 @@ Bullet_Module.prototype.init = function () {
 }
 
 Bullet_Module.prototype.process = function () {
-    console.warn("process");
+    // console.warn("process");
     this.baseX -= this.ratioX;
     this.baseY -= this.ratioY;
 

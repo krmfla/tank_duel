@@ -57,7 +57,8 @@ p {
     background-repeat: no-repeat;
     position: absolute;
     box-sizing: border-box;
-    padding: 16px 15px;
+    padding: 17px 15px;
+    z-index: 5;
 }
 
 .hit_point.left {
@@ -139,6 +140,93 @@ p {
     background-position: center center;
 }
 
+.signal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(2, 2);
+    opacity: 0;
+    background-size: 100%;
+}
+
+.signal.active {
+    animation-name: slideIn_n_fadeOut;
+    animation-duration: 3s;
+}
+
+.signal.ready {
+    width: 170px;
+    height: 67px;
+    z-index: 5;
+    background-image: url("../images/ready.png");
+}
+
+.signal.go {
+    width: 120px;
+    height: 80px;
+    z-index: 6;
+    animation-delay: 2s;
+    background-image: url("../images/go.png");
+}
+
+.counter_box {
+    display: inline-block;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+}
+
+.counter_box div {
+    width: 51px;
+    height: 69px;
+    background-size: 100%;
+    float: left;
+}
+
+.counter_box div:nth-of-type(1) {}
+
+.number0 {
+    background-image: url("../images/number_0.png");
+}
+
+.number1 {
+    background-image: url("../images/number_1.png");
+}
+
+.number2 {
+    background-image: url("../images/number_2.png");
+}
+
+.number3 {
+    background-image: url("../images/number_3.png");
+}
+
+.number4 {
+    background-image: url("../images/number_4.png");
+}
+
+.number5 {
+    background-image: url("../images/number_5.png");
+}
+
+.number6 {
+    background-image: url("../images/number_6.png");
+}
+
+.number7 {
+    background-image: url("../images/number_7.png");
+}
+
+.number8 {
+    background-image: url("../images/number_8.png");
+}
+
+.number9 {
+    background-image: url("../images/number_9.png");
+}
+
 @media (max-width: 768px) {}
 
 .shake {
@@ -167,7 +255,30 @@ p {
     }
 }
 
+@keyframes slideIn_n_fadeOut {
+    0% {
+        transform: translate(-50%, -50%) scale(2, 2);
+        opacity: 0;
+    }
+
+    40% {
+        transform: translate(-50%, -50%) scale(1.2, 1.2);
+        opacity: 1;
+    }
+
+    60% {
+        transform: translate(-50%, -50%) scale(1.2, 1.2);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(0.8, 0.8);
+        opacity: 0;
+    }
+}
+
 /* plugin */
+
 .hide {
     display: none;
 }

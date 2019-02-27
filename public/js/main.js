@@ -3,6 +3,11 @@
 };*/
 
 var room_id = null;
+counter_timer = null;
+var counter_tens = 9;
+var counter_ones = 9;
+var counter_tens_el;
+var counter_ones_el;
 
 console.log(location);
 
@@ -55,14 +60,31 @@ function createRoom() {
 }
 
 function gameStart() {
-	console.warn("gameStart");
+	console.warn("=== gameStart ===");
+	var ready = document.getElementById("signal_ready");
+	var go = document.getElementById("signal_go");
+	document.getElementById("signal_go");
 	$("#qrcode_box").hide();
 	$("#main").removeClass('hidden');
+
+	counter_tens_el = document.getElementById("counter_tens");
+	counter_ones_el = document.getElementById("counter_ones");
+
 	window.tankPrototype1.lockOn(window.tankPrototype2);
 	window.tankPrototype2.lockOn(window.tankPrototype1);
 
-	window.tankPrototype1.setFireSystem();
-	window.tankPrototype2.setFireSystem();
+
+
+	ready.classList.add("active");
+	go.classList.add("active");
+
+	setTimeout(function () {
+		window.tankPrototype1.setFireSystem();
+		window.tankPrototype2.setFireSystem();
+		counter_timer = setInterval(function () {
+			counter();
+		}, 1000);
+	}, 5000);
 }
 
 function gameEnd() {
@@ -70,6 +92,21 @@ function gameEnd() {
 	window.tankPrototype2.holdFiring();
 	clearInterval(window.tankPrototype1.lockonTimer);
 	clearInterval(window.tankPrototype2.lockonTimer);
+	clearInterval(counter_timer);
+}
+
+function counter() {
+	counter_ones -= 1;
+	if (counter_ones < 0) {
+		counter_tens -= 1;
+		counter_ones = 9;
+	}
+	if (counter_tens === 0 && counter_ones === 0) {
+		gameEnd();
+	}
+
+	counter_tens_el.className = "number" + counter_tens;
+	counter_ones_el.className = "number" + counter_ones;
 }
 
 var socket = io(`/${room_id}`);

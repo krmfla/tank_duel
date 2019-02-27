@@ -137,7 +137,7 @@ TankPrototype.prototype.rotate = function () {
 };
 
 TankPrototype.prototype.move = function () {
-	console.warn("move");
+	// console.warn("move");
 	if (this.targetPoint.forwardX === 0) {
 		this.x = this.targetPoint.x;
 		//console.log("forwardX = 0");
@@ -187,7 +187,7 @@ TankPrototype.prototype.move = function () {
 }
 
 TankPrototype.prototype.lockOn = function (target) {
-	console.warn("lockOn");
+	// console.warn("lockOn");
 	this.lockOnTarget = target;
 	var cannon = this.tankBodyEl.querySelector('.cannon');
 	this.lockonTimer = setInterval(function () {
@@ -199,7 +199,7 @@ TankPrototype.prototype.lockOn = function (target) {
 };
 
 TankPrototype.prototype.setFireSystem = function () {
-	console.warn("--- Fire System ---");
+	// console.warn("--- Fire System ---");
 	this.firing();
 	// keep shoting
 	this.firingTimer = setInterval(function () {
@@ -246,8 +246,8 @@ TankPrototype.prototype.initPosition = function (character) {
 	this.x = startX + this.offsetX;
 	this.y = startY + this.offsetY;
 
-	console.log("x:" + this.x);
-	console.log("y:" + this.y);
+	// console.log("x:" + this.x);
+	// console.log("y:" + this.y);
 
 	//render
 	this.tankBodyEl.style.left = startX + "px";
@@ -260,8 +260,8 @@ TankPrototype.prototype.initPosition = function (character) {
 TankPrototype.prototype.stopAndShow = function () {
 	clearTimeout(this.rotateTimer);
 	clearTimeout(this.moveTimer);
-	console.info(this);
-	console.info(this.targetPoint);
+	// console.info(this);
+	// console.info(this.targetPoint);
 };
 
 //temporary
@@ -305,7 +305,7 @@ TankPrototype.prototype.setTouchPoint = function (object) {
 };
 
 TankPrototype.prototype.holdFiring = function () {
-	console.log("holdFiring");
+	// console.log("holdFiring");
 	this.hold = true;
 	clearInterval(this.firingTimer);
 }
