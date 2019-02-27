@@ -47,6 +47,16 @@ app.get('/:id', function (req, res) {
         console.log(_id + ": player2 hit");
         room_object[req.params.id].emit('player2 hit', data);
       });
+
+      socket.on('room setting', function (data) {
+        console.log(data);
+        console.log(data.character);
+        if (data.character === 1) {
+          waiting_object[req.params.id].mode = "single";
+        } else if (data.character === 2) {
+          waiting_object[req.params.id].mode = "double";
+        }
+      });
     });
   }
   res.sendFile(__dirname + '/public/index.html');
@@ -60,6 +70,10 @@ app.get('/controller/:id', function (req, res) {
   if (waiting_object[req.params.id].waiting === 2) {
     res.sendFile(__dirname + '/public/controller_page.html');
     waiting_object[req.params.id].waiting -= 1;
+    if (waiting_object[req.params.id].mode === "single") {
+      waiting_object[req.params.id].waiting -= 1;
+      room_object[req.params.id].emit('game start', {});
+    }
   } else if (waiting_object[req.params.id].waiting === 1) {
     res.sendFile(__dirname + '/public/controller_page2.html');
     room_object[req.params.id].emit('game start', {});

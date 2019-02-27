@@ -266,7 +266,6 @@ TankPrototype.prototype.stopAndShow = function () {
 
 //temporary
 TankPrototype.prototype.setTouchPoint = function (object) {
-	console.log(object);
 
 	var distanceX = object.touchX - this.x;
 	var distanceY = object.touchY - this.y;
@@ -283,10 +282,9 @@ TankPrototype.prototype.setTouchPoint = function (object) {
 		forwardY = 0;
 	}
 
-
 	this.targetPoint = {
-		"x": event.clientX,
-		"y": event.clientY,
+		"x": object.clientX,
+		"y": object.clientY,
 		"distanceX": distanceX,
 		"distanceY": distanceY,
 		"hypotenuse": hypotenuse,

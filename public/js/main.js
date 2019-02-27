@@ -8,6 +8,8 @@ var counter_tens = 9;
 var counter_ones = 9;
 var counter_tens_el;
 var counter_ones_el;
+var duel_mode = null;
+var computer_timer = null;
 
 console.log(location);
 
@@ -38,7 +40,7 @@ window.onload = function () {
 	};
 	window.tankPrototype1 = new TankPrototype(tank1, 1, config);
 	window.tankPrototype2 = new TankPrototype(tank2, 2, config);
-	createRoom();
+	eventBinding();
 }
 
 document.addEventListener("visibilitychange", function () {
@@ -48,7 +50,24 @@ document.addEventListener("visibilitychange", function () {
 	}
 });
 
-function createRoom() {
+function eventBinding() {
+	var single_btn = document.getElementById("single_btn");
+	var double_btn = document.getElementById("double_btn");
+
+	single_btn.onclick = function () {
+		createRoom(1);
+		duel_mode = "single";
+	}
+
+	double_btn.onclick = function () {
+		createRoom(2);
+		duel_mode = "double";
+	}
+}
+
+function createRoom(character) {
+	var room_setting = document.getElementById("room_setting");
+	var qrcode_box = document.getElementById("qrcode_box");
 	var qrcode_el = document.getElementById("qrcode");
 	console.warn(qrcode_el);
 	var url = window.location.origin;
@@ -57,6 +76,12 @@ function createRoom() {
 	// console.log(location);
 	console.log(url + path);
 	var qrcode = new QRCode(qrcode_el, url + path);
+
+	socket.emit('room setting', {
+		"character": character
+	});
+	room_setting.classList.add("hide");
+	qrcode_box.classList.remove("hide");
 }
 
 function gameStart() {
@@ -81,9 +106,18 @@ function gameStart() {
 	setTimeout(function () {
 		window.tankPrototype1.setFireSystem();
 		window.tankPrototype2.setFireSystem();
+		//Game Start
 		counter_timer = setInterval(function () {
 			counter();
 		}, 1000);
+		//set Computer controller
+		if (duel_mode === "single") {
+			computerControl();
+			computer_timer = setInterval(function () {
+				computerControl();
+			}, 15000);
+		}
+
 	}, 5000);
 }
 
@@ -93,6 +127,7 @@ function gameEnd() {
 	clearInterval(window.tankPrototype1.lockonTimer);
 	clearInterval(window.tankPrototype2.lockonTimer);
 	clearInterval(counter_timer);
+	clearInterval(computer_timer);
 }
 
 function counter() {
@@ -107,6 +142,16 @@ function counter() {
 
 	counter_tens_el.className = "number" + counter_tens;
 	counter_ones_el.className = "number" + counter_ones;
+}
+
+function computerControl() {
+	console.log("computerControl");
+	var x = Math.floor(Math.random() * 1280) + 1;
+	var y = Math.floor(Math.random() * 720) + 1;
+	window.tankPrototype2.setTouchPoint({
+		"touchX": x,
+		"touchY": y
+	});
 }
 
 var socket = io(`/${room_id}`);
