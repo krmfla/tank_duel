@@ -21,7 +21,7 @@
     "npm": ">= 1.0.0"
   },
   "dependencies": {
-    "express": "^4.16.4",
+    "express": "^4.21.2",
     "nodemon": "^1.18.10",
     "socket.io": "4.8.1",
     "yarn": "^1.13.0"
